@@ -9,19 +9,25 @@ namespace Snake
 {
     class Program
     {
+        const Int32 MaxConsoleX = 120;//80
+        const Int32 MaxConsoleY = 30;//25
+
         static void Main(string[] args)
         {
-            const Int32 MaxConsoleX = 120;//80
-            const Int32 MaxConsoleY = 30;//25
+            Console.SetBufferSize(MaxConsoleX, MaxConsoleY);//(80,25)
+            Console.SetCursorPosition(MaxConsoleX / 2 - 10, MaxConsoleY / 2 - 1);
+            Console.WriteLine("Press Enter to start");
+            Console.ReadLine();
+
+        Start:
 
             int Score = 0;
 
-            Console.SetBufferSize(MaxConsoleX, MaxConsoleY);//(80,25)
-
-            Walls walls = new Walls(MaxConsoleX, MaxConsoleY);
+            Console.Clear();
+            Walls walls = new Walls(MaxConsoleX, MaxConsoleY, '#');
             walls.Draw();
 
-            Point p = new Point(4, 5, '*');
+            Point p = new Point(MaxConsoleX / 2, MaxConsoleY / 2, '*');
             Snake snake = new Snake(p, 4, Direction.RIGHT);
             snake.Draw();
             snake.Move();
@@ -61,24 +67,17 @@ namespace Snake
                     snake.HandleKey(key.Key);
                 }
             }
-            snake.Clear();
-            food.Clear();
-            Console.SetCursorPosition(MaxConsoleX / 2 - 5, MaxConsoleY / 2);
-            Console.WriteLine("Game Over!");
-            Console.SetCursorPosition(MaxConsoleX / 2 - 6, MaxConsoleY / 2 + 1);
-            Console.WriteLine("Score: " + Score);
-            Console.ReadLine();
-        }
 
-        /*public static void GameOver()
-        {
-            snake.Clear();
-            food.Clear();
-            Console.SetCursorPosition(MaxConsoleX / 2 - 5, MaxConsoleY / 2);
+            Console.Clear();
+            Console.SetCursorPosition(MaxConsoleX / 2 - 5, MaxConsoleY / 2 - 5);
             Console.WriteLine("Game Over!");
-            Console.SetCursorPosition(MaxConsoleX / 2 - 6, MaxConsoleY / 2 + 1);
+            Console.SetCursorPosition(MaxConsoleX / 2 - 4, MaxConsoleY / 2 -3);
             Console.WriteLine("Score: " + Score);
-            Console.ReadLine();
-        }*/
+            Console.SetCursorPosition(MaxConsoleX / 2 - 10, MaxConsoleY / 2 + 3);
+            Console.WriteLine("Press Y to try again");
+            ConsoleKeyInfo repkey = Console.ReadKey();
+            if (repkey.Key == ConsoleKey.Y)
+                goto Start;
+        }
     }
 }

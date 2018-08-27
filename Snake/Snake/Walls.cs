@@ -10,14 +10,14 @@ namespace Snake
     {
         List<Figure> wallList;
 
-        public Walls(int mapWidth, int mapHeight)
+        public Walls(int mapWidth, int mapHeight, char sym)
         {
             wallList = new List<Figure>();
 
-            HorizontalLine UpLine = new HorizontalLine(0, mapWidth-1, 1, '+');
-            HorizontalLine DowntLine = new HorizontalLine(0, mapWidth-1, mapHeight-1, '+');
-            VerticalLine LeftLine = new VerticalLine(0, 0, mapHeight - 2, '+');
-            VerticalLine RightLine = new VerticalLine(mapWidth - 1, 0, mapHeight - 2, '+');
+            HorizontalLine UpLine = new HorizontalLine(0, mapWidth-1, 1, sym);
+            HorizontalLine DowntLine = new HorizontalLine(0, mapWidth-1, mapHeight-1, sym);
+            VerticalLine LeftLine = new VerticalLine(0, 0, mapHeight - 2, sym);
+            VerticalLine RightLine = new VerticalLine(mapWidth - 1, 0, mapHeight - 2, sym);
 
             wallList.Add(UpLine);
             wallList.Add(DowntLine);
@@ -45,6 +45,14 @@ namespace Snake
                 wall.Draw();
             }
             Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public void Clear()
+        {
+            foreach(var wall in wallList)
+            {
+                wall.Clear();
+            }
         }
     }
 }
