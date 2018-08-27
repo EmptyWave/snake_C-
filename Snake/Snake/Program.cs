@@ -9,12 +9,14 @@ namespace Snake
 {
     class Program
     {
-        const Int32 MaxConsoleX = 120;//80
-        const Int32 MaxConsoleY = 30;//25
+        const Int32 MaxConsoleX = 80;
+        const Int32 MaxConsoleY = 30;
 
         static void Main(string[] args)
         {
-            Console.SetBufferSize(MaxConsoleX, MaxConsoleY);//(80,25)
+            Console.SetWindowSize(MaxConsoleX, MaxConsoleY);
+            Console.SetBufferSize(MaxConsoleX, MaxConsoleY);
+            Console.CursorVisible = false;
             Console.SetCursorPosition(MaxConsoleX / 2 - 10, MaxConsoleY / 2 - 1);
             Console.WriteLine("Press Enter to start");
             Console.ReadLine();
@@ -34,7 +36,7 @@ namespace Snake
 
             Console.ForegroundColor = ConsoleColor.Yellow;
 
-            FoodCreator foodCreator = new FoodCreator(120, 30, '$');
+            FoodCreator foodCreator = new FoodCreator(MaxConsoleX-2, MaxConsoleY-1, '$');
             Point food = foodCreator.CreateFood();
             food.Draw();
 
@@ -46,7 +48,7 @@ namespace Snake
                 {
                     break;
                 }
-                if(snake.Eat(food))
+                if (snake.Eat(food))
                 {
                     Score++;
                     Console.ForegroundColor = ConsoleColor.Yellow;
@@ -63,9 +65,10 @@ namespace Snake
 
                 if (Console.KeyAvailable)
                 {
-                    ConsoleKeyInfo key = Console.ReadKey();
+                    ConsoleKeyInfo key = Console.ReadKey(true);
                     snake.HandleKey(key.Key);
                 }
+
             }
 
             Console.Clear();
