@@ -11,28 +11,42 @@ namespace Snake
     {
         static void Main(string[] args)
         {
-            Console.SetBufferSize(120, 30);//(80,25)
+            const Int32 MaxConsoleX = 120;//80
+            const Int32 MaxConsoleY = 30;//25
 
-            //Отрисовка рамочки
-            FrameDraw();
+            int Score = 0;
 
-            //drowing points
+            Console.SetBufferSize(MaxConsoleX, MaxConsoleY);//(80,25)
+
+            Walls walls = new Walls(MaxConsoleX, MaxConsoleY);
+            walls.Draw();
+
             Point p = new Point(4, 5, '*');
             Snake snake = new Snake(p, 4, Direction.RIGHT);
             snake.Draw();
             snake.Move();
 
-            FoodCreator foodCreator = new FoodCreator(80, 25, '$');
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
+            FoodCreator foodCreator = new FoodCreator(120, 30, '$');
             Point food = foodCreator.CreateFood();
             food.Draw();
 
+            Console.ForegroundColor = ConsoleColor.White;
 
-            while(true)
+            while (true)
             {
+                if(walls.IsHit(snake) || snake.IsHitTail())
+                {
+                    break;
+                }
                 if(snake.Eat(food))
                 {
+                    Score++;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     food = foodCreator.CreateFood();
                     food.Draw();
+                    Console.ForegroundColor = ConsoleColor.White;
                 }
                 else
                 {
@@ -47,19 +61,24 @@ namespace Snake
                     snake.HandleKey(key.Key);
                 }
             }
+            snake.Clear();
+            food.Clear();
+            Console.SetCursorPosition(MaxConsoleX / 2 - 5, MaxConsoleY / 2);
+            Console.WriteLine("Game Over!");
+            Console.SetCursorPosition(MaxConsoleX / 2 - 6, MaxConsoleY / 2 + 1);
+            Console.WriteLine("Score: " + Score);
+            Console.ReadLine();
         }
-        
-        public static void FrameDraw()
-        {
-            HorizontalLine HLeftLine = new HorizontalLine(0, 78, 0, '+');
-            HorizontalLine HRightLine = new HorizontalLine(0, 78, 24, '+');
-            VerticalLine VUpLine = new VerticalLine(0, 0, 24, '+');
-            VerticalLine VDownLine = new VerticalLine(78, 0, 24, '+');
 
-            HLeftLine.Draw();
-            HRightLine.Draw();
-            VUpLine.Draw();
-            VDownLine.Draw();
-        }
+        /*public static void GameOver()
+        {
+            snake.Clear();
+            food.Clear();
+            Console.SetCursorPosition(MaxConsoleX / 2 - 5, MaxConsoleY / 2);
+            Console.WriteLine("Game Over!");
+            Console.SetCursorPosition(MaxConsoleX / 2 - 6, MaxConsoleY / 2 + 1);
+            Console.WriteLine("Score: " + Score);
+            Console.ReadLine();
+        }*/
     }
 }
